@@ -5,14 +5,20 @@ require('dotenv').config();
 
 const companyRoutes = require('./routes/companyRoutes');
 const authRoutes = require('./routes/authRoutes.js');
+const sentMailRoutes = require('./routes/sentMailRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  credentials: true // Only if you're using cookies
+}));
 app.use(express.json());
+
 app.use('/api/companies', companyRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/sent-mails', sentMailRoutes);
 
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,

@@ -1,9 +1,9 @@
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import User from '../models/User.js';
-import nodemailer from 'nodemailer';
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const User = require('../models/User');
+const nodemailer = require('nodemailer');
 
-export const register = async (req, res) => {
+const register = async (req, res) => {
   try {
     const { email, password } = req.body;
     const existing = await User.findOne({ email });
@@ -18,7 +18,7 @@ export const register = async (req, res) => {
   }
 };
 
-export const login = async (req, res) => {
+const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
@@ -34,7 +34,7 @@ export const login = async (req, res) => {
   }
 };
 
-export const recover = async (req, res) => {
+const recover = async (req, res) => {
   const { email } = req.body;
   const user = await User.findOne({ email });
   if (!user) return res.status(400).json({ msg: 'No user with that email' });
@@ -59,4 +59,10 @@ export const recover = async (req, res) => {
     if (error) return res.status(500).json({ msg: error.message });
     res.json({ msg: 'Recovery email sent' });
   });
+};
+
+module.exports = {
+  register,
+  login,
+  recover,
 };
