@@ -45,12 +45,12 @@ const getMailsByCompany = async (req, res) => {
 // Update sent mail
 const updateMail = async (req, res) => {
     const { id } = req.params;
-    const { name, email, date } = req.body;
+        const { companyId, email, date, description, type } = req.body;
 
     try {
         const updated = await Mail.findByIdAndUpdate(
             id,
-            { name, email, date },
+            { companyId, email, date, description, type },
             { new: true }
         );
         res.json(updated);
@@ -127,5 +127,5 @@ module.exports = {
     deleteMail,
     getMailsByCompany,
     getMailsByType,
-    getMailSummary,
+    getMailSummary
 };

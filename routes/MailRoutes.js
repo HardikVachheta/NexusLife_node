@@ -10,5 +10,4 @@ router.get('/type/:type', controller.getMailsByType);
 router.get('/company/:companyId', controller.getMailsByCompany);
 router.get('/summary', controller.getMailSummary);
 
-
 module.exports = router;
