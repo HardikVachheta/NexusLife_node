@@ -21,7 +21,19 @@ const addCompany = async (req, res) => {
     }
 }
 
+// Get single company by ID
+const getCompanyById = async (req, res) => {
+    try {
+        const company = await Company.findById(req.params.id);
+        if (!company) return res.status(404).json({ error: 'Company not found' });
+        res.json(company);
+    } catch (err) {
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
 module.exports = {
     getCompanies,
     addCompany,
+    getCompanyById
 };

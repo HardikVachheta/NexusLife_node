@@ -5,7 +5,7 @@ require('dotenv').config();
 
 const companyRoutes = require('./routes/companyRoutes');
 const authRoutes = require('./routes/authRoutes.js');
-const sentMailRoutes = require('./routes/sentMailRoutes');
+const MailRoutes = require('./routes/MailRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -18,7 +18,7 @@ app.use(express.json());
 
 app.use('/api/companies', companyRoutes);
 app.use('/api/auth', authRoutes);
-app.use('/api/sent-mails', sentMailRoutes);
+app.use('/api/mails', MailRoutes);
 
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
