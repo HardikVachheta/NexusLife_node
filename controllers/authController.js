@@ -5,14 +5,18 @@ const nodemailer = require('nodemailer');
 
 const register = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { name, email, password } = req.body;
     const existing = await User.findOne({ email });
     if (existing) return res.status(400).json({ msg: 'User already exists' });
 
     const hash = await bcrypt.hash(password, 10);
-    const user = new User({ email, password: hash });
+    const user = new User({ name, email, password: hash });
     await user.save();
-    res.status(201).json({ msg: 'User registered' });
+    res.status(201).json({
+      msg: 'User registered',
+      user: { name: user.name, email: user.email },
+      token: jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' })
+    });
   } catch (err) {
     res.status(500).json({ msg: err.message });
   }
@@ -28,7 +32,10 @@ const login = async (req, res) => {
     if (!isMatch) return res.status(400).json({ msg: 'Invalid credentials' });
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
-    res.json({ token });
+    res.json({
+      token,
+      user: { name: user.name, email: user.email },
+    });
   } catch (err) {
     res.status(500).json({ msg: err.message });
   }
