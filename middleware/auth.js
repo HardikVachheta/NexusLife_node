@@ -2,7 +2,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User'); // Ensure this path is correct relative to auth.js
 
-const auth = async (req, res, next) => {
+const protect = async (req, res, next) => {
     // Get token from the 'Authorization' header
     const authHeader = req.header('Authorization');
 
@@ -18,12 +18,12 @@ const auth = async (req, res, next) => {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         // Attach user ID from token payload to the request object
-        req.user = decoded.id;
+        req.user = await User.findById(decoded.id).select('-password');
         next(); // Proceed to the next middleware/route handler
     } catch (err) {
-        // If token is invalid (e.g., expired, malformed)
+        console.error('Authentication failed:', error);
         res.status(401).json({ msg: 'Token is not valid or expired.' });
     }
 };
 
-module.exports = auth;
+module.exports = protect;
