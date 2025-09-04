@@ -7,6 +7,7 @@ const companyRoutes = require('./routes/companyRoutes');
 const authRoutes = require('./routes/authRoutes.js');
 const mailRoutes = require('./routes/MailRoutes');
 const profileRoutes = require('./routes/profileRoutes');
+const jobRoutes = require('./routes/jobScrapesRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -21,6 +22,8 @@ app.use('/api/companies', companyRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/mails', mailRoutes);
 app.use('/api/profile', profileRoutes); 
+app.use('/api/job', jobRoutes);
+
 
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,

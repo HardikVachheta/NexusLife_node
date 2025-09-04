@@ -9,7 +9,7 @@ const protect = async (req, res, next) => {
     // Check if Authorization header exists and starts with 'Bearer '
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
         return res.status(401).json({ msg: 'No token, authorization denied. Please provide a Bearer token.' });
-    }
+    }  
 
     // Extract the token (remove 'Bearer ' prefix)
     const token = authHeader.split(' ')[1];
