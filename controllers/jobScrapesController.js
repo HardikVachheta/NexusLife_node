@@ -1,10 +1,10 @@
-// const puppeteer = require('puppeteer');
-const { getBrowser } = require('../browser');
+const puppeteer = require('puppeteer');
+// const { getBrowser } = require('../browser');
 
 
 async function scrapeInfynnoJobs() {
-    // const browser = await puppeteer.launch({ headless: 'new' });
-    const browser = await getBrowser();
+    const browser = await puppeteer.launch({ headless: 'new' });
+    // const browser = await getBrowser();
     const page = await browser.newPage();
     const url = 'https://infynno.com/career/';
 
@@ -47,7 +47,7 @@ async function scrapeInfynnoJobs() {
         console.error(`Scraping Infynno failed:`, error);
         return null;
     } finally {
-        await page.close();
+        await browser.close();
     }
 }
 
