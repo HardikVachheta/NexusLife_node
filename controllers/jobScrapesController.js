@@ -1,7 +1,10 @@
-const puppeteer = require('puppeteer');
+// const puppeteer = require('puppeteer');
+const { getBrowser } = require('../browser');
+
 
 async function scrapeInfynnoJobs() {
-    const browser = await puppeteer.launch({ headless: 'new' });
+    // const browser = await puppeteer.launch({ headless: 'new' });
+    const browser = await getBrowser();
     const page = await browser.newPage();
     const url = 'https://infynno.com/career/';
 
@@ -44,7 +47,7 @@ async function scrapeInfynnoJobs() {
         console.error(`Scraping Infynno failed:`, error);
         return null;
     } finally {
-        await browser.close();
+        await page.close();
     }
 }
 
@@ -52,7 +55,7 @@ async function scrapeInfynnoJobs() {
  * Scrapes job details from the Excelsior Technologies website.
  */
 async function scrapeExcelsiorJobs() {
-    const browser = await puppeteer.launch({ headless: 'new' });
+    const browser = await getBrowser();
     const page = await browser.newPage();
     const url = 'https://excelsiortechnologies.com/career';
 
@@ -79,15 +82,15 @@ async function scrapeExcelsiorJobs() {
         console.error(`Scraping Excelsior failed:`, error);
         return null;
     } finally {
-        await browser.close();
+        await page.close();
     }
-}
+}                                                                                                                                                                                                                                                                                                               
 
 /**
  * Scrapes job details from the Acquaint Soft website.
  */
 async function scrapeAcquaintSoftJobs() {
-    const browser = await puppeteer.launch({ headless: 'new' });
+    const browser = await getBrowser();
     const page = await browser.newPage();
     const url = 'https://acquaintsoft.com/careers';
 
@@ -126,7 +129,7 @@ async function scrapeAcquaintSoftJobs() {
         console.error(`Scraping Acquaint Soft failed:`, error);
         return null;
     } finally {
-        await browser.close();
+        await page.close();
     }
 }
 
@@ -135,7 +138,7 @@ async function scrapeAcquaintSoftJobs() {
  * You would replace the selectors and URL with the real ones.
  */
 async function scrapeOtherCompanyJobs() {
-    const browser = await puppeteer.launch({ headless: 'new' });
+    const browser = await getBrowser();
     const page = await browser.newPage();
     const url = 'https://example-other-company-careers.com'; // Replace with the actual URL
 
@@ -159,7 +162,7 @@ async function scrapeOtherCompanyJobs() {
         console.error(`Scraping hypothetical company failed:`, error);
         return null;
     } finally {
-        await browser.close();
+        await page.close();
     }
 }
 
