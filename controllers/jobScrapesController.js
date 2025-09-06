@@ -9,7 +9,7 @@ async function scrapeInfynnoJobs() {
     const url = 'https://infynno.com/career/';
 
     try {
-        await page.goto(url, { waitUntil: 'networkidle2' });
+        await page.goto(url, { waitUntil: 'networkidle2' , timeout: 30000  });
         const allJobs = await page.evaluate(() => {
             const jobTabs = document.querySelectorAll('.vc_tta-tab > a');
             const jobs = [];
