@@ -60,7 +60,7 @@ async function scrapeExcelsiorJobs() {
     const url = 'https://excelsiortechnologies.com/career';
 
     try {
-        await page.goto(url, { waitUntil: 'domcontentloaded' });
+        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000  });
         const allJobs = await page.evaluate(() => {
             // Select all job listing containers.
             const jobContainers = document.querySelectorAll('#blogListingDivId > div');
@@ -95,7 +95,7 @@ async function scrapeAcquaintSoftJobs() {
     const url = 'https://acquaintsoft.com/careers';
 
     try {
-        await page.goto(url, { waitUntil: 'domcontentloaded' });
+        await page.goto(url, { waitUntil: 'domcontentloaded' , timeout: 30000  });
 
         const allJobs = await page.evaluate(async () => {
             const jobContainers = document.querySelectorAll('dl > div');
@@ -143,7 +143,7 @@ async function scrapeOtherCompanyJobs() {
     const url = 'https://example-other-company-careers.com'; // Replace with the actual URL
 
     try {
-        await page.goto(url, { waitUntil: 'networkidle2' });
+        await page.goto(url, { waitUntil: 'networkidle2' , timeout: 30000  });
         const allJobs = await page.evaluate(() => {
             // **This is where you would put the CSS selectors for the new company.**
             // This is a placeholder and will not work on a real site.

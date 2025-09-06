@@ -1,9 +1,9 @@
-# #!/usr/bin/env bash
-# # exit on error
-# set -o errexit
+#!/usr/bin/env bash
+# exit on error
+set -o errexit
 
-# echo "--- Installing dependencies ---"
-# npm install
+echo "--- Installing dependencies ---"
+npm install
 
-# echo "--- Installing Puppeteer browser ---"
-# npx puppeteer browsers install chrome
+echo "--- Installing Puppeteer browser ---"
+npx puppeteer browsers install chrome
