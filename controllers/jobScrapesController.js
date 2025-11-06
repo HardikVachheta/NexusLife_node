@@ -1,15 +1,15 @@
-const puppeteer = require('puppeteer');
-// const { getBrowser } = require('../browser');
+// const puppeteer = require('puppeteer');
+const { getBrowser } = require('../browser');
 
 
 async function scrapeInfynnoJobs() {
-    const browser = await puppeteer.launch({ headless: 'new' });
-    // const browser = await getBrowser();
+    // const browser = await puppeteer.launch({ headless: 'new' });
+    const browser = await getBrowser();
     const page = await browser.newPage();
     const url = 'https://infynno.com/career/';
 
     try {
-        await page.goto(url, { waitUntil: 'networkidle2' , timeout: 30000  });
+        await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
         const allJobs = await page.evaluate(() => {
             const jobTabs = document.querySelectorAll('.vc_tta-tab > a');
             const jobs = [];
@@ -47,7 +47,7 @@ async function scrapeInfynnoJobs() {
         console.error(`Scraping Infynno failed:`, error);
         return null;
     } finally {
-        await browser.close();
+        await page.close();
     }
 }
 
@@ -60,7 +60,7 @@ async function scrapeExcelsiorJobs() {
     const url = 'https://excelsiortechnologies.com/career';
 
     try {
-        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000  });
+        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
         const allJobs = await page.evaluate(() => {
             // Select all job listing containers.
             const jobContainers = document.querySelectorAll('#blogListingDivId > div');
@@ -84,7 +84,7 @@ async function scrapeExcelsiorJobs() {
     } finally {
         await page.close();
     }
-}                                                                                                                                                                                                                                                                                                               
+}
 
 /**
  * Scrapes job details from the Acquaint Soft website.
@@ -95,7 +95,7 @@ async function scrapeAcquaintSoftJobs() {
     const url = 'https://acquaintsoft.com/careers';
 
     try {
-        await page.goto(url, { waitUntil: 'domcontentloaded' , timeout: 30000  });
+        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
 
         const allJobs = await page.evaluate(async () => {
             const jobContainers = document.querySelectorAll('dl > div');
@@ -133,6 +133,49 @@ async function scrapeAcquaintSoftJobs() {
     }
 }
 
+async function scrapeLogicalWingsJobs() {
+    // const browser = await puppeteer.launch({ headless: 'new' });
+    const browser = await getBrowser();
+    const page = await browser.newPage();
+    const url = 'https://logicalwings.com/career/';
+
+    try {
+        await page.goto(url, { waitUntil: 'domcontentloaded' });
+
+        // Wait for the job titles to be visible using a more stable selector.
+        await page.waitForSelector('h2.has-text-align-center.has-medium-font-size');
+
+        const jobs = await page.evaluate(() => {
+            const jobListings = [];
+            // Use a more general selector to find all job title elements.
+            const titleElements = document.querySelectorAll('h2.has-text-align-center.has-medium-font-size');
+
+            titleElements.forEach(titleElement => {
+                // Find the closest parent container for this specific job listing.
+                const container = titleElement.closest('div.wp-block-uagb-container');
+                
+                // Get the experience from within this container.
+                const experienceElement = container ? container.querySelector('p') : null;
+
+                const title = titleElement ? titleElement.textContent.trim() : 'N/A';
+                const experience = experienceElement ? experienceElement.textContent.trim() : 'N/A';
+
+                jobListings.push({ title, experience });
+            });
+
+            return jobListings;
+        });
+
+        // The image shows two job listings
+        return jobs;
+    } catch (error) {
+        console.error(`Scraping Logical Wings failed:`, error);
+        return null;
+    } finally {
+        await page.close();
+    }
+}
+
 /**
  * A placeholder scraper for a hypothetical company.
  * You would replace the selectors and URL with the real ones.
@@ -143,7 +186,7 @@ async function scrapeOtherCompanyJobs() {
     const url = 'https://example-other-company-careers.com'; // Replace with the actual URL
 
     try {
-        await page.goto(url, { waitUntil: 'networkidle2' , timeout: 30000  });
+        await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
         const allJobs = await page.evaluate(() => {
             // **This is where you would put the CSS selectors for the new company.**
             // This is a placeholder and will not work on a real site.
@@ -180,6 +223,9 @@ const getJobDetails = async (req, res) => {
             break;
         case 'acquaintsoft':
             jobDetails = await scrapeAcquaintSoftJobs();
+            break;
+        case 'logicalwings':
+            jobDetails = await scrapeLogicalWingsJobs();
             break;
         case 'other-company': // This is a placeholder for your new company
             jobDetails = await scrapeOtherCompanyJobs();
