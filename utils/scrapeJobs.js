@@ -8,7 +8,7 @@ const scrapeCareerPage = async (websiteUrl) => {
     const careerPaths = [
       "/career", "/careers", "/jobs", "/join-us",
       "/work-with-us", "/hiring", "/opportunities"
-    ];
+    ]; 
 
     const baseUrl = new URL(websiteUrl).origin;
     browser = await puppeteer.launch({
